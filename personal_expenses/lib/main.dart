@@ -14,9 +14,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-
-//  String titleInput;
-//  String amountInput;
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
@@ -28,7 +25,6 @@ class MyHomePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
