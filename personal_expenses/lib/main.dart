@@ -103,8 +103,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final _mediaQuery = MediaQuery.of(context);
+
+    final _isLandscape = _mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
       title: Text('Personal Expenses'),
@@ -119,9 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final _txListWidget = Container(
-        height: (MediaQuery.of(context).size.height -
+        height: (_mediaQuery.size.height -
                 appBar.preferredSize.height -
-                MediaQuery.of(context).padding.top) *
+                _mediaQuery.padding.top) *
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
@@ -148,20 +149,21 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             if (!_isLandscape)
               Container(
-                  height: (MediaQuery.of(context).size.height -
+                  height: (_mediaQuery.size.height -
                           appBar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
+                          _mediaQuery.padding.top) *
                       0.3,
                   child: Chart(_recentTransactions)),
             if (!_isLandscape) _txListWidget,
-            if (_isLandscape) _showCart
-                ? Container(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
-                        0.7,
-                    child: Chart(_recentTransactions))
-                : _txListWidget
+            if (_isLandscape)
+              _showCart
+                  ? Container(
+                      height: (_mediaQuery.size.height -
+                              appBar.preferredSize.height -
+                              _mediaQuery.padding.top) *
+                          0.7,
+                      child: Chart(_recentTransactions))
+                  : _txListWidget
           ],
         ),
       ),
