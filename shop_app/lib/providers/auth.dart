@@ -56,6 +56,7 @@ class Auth with ChangeNotifier {
           seconds: int.parse(responseData['expiresIn']),
         ),
       );
+      notifyListeners();
     } catch (error) {
       throw error;
     }
