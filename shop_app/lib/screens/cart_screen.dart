@@ -91,7 +91,7 @@ class _OrderButtonState extends State<OrderButton> {
         );
 
         setState(() {
-          _isLoading = true;
+          _isLoading = false;
         });
 
         widget.cart.clear();
