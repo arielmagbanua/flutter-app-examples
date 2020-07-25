@@ -44,6 +44,10 @@ class Products with ChangeNotifier {
 
 //  var _showFavoritesOnly = false;
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
@@ -70,7 +74,8 @@ class Products with ChangeNotifier {
 //  }
 
   Future<void> fetchAndSetProducts() async {
-    const url = "https://udemy-training-af9d1.firebaseio.com/products.json";
+    final url =
+        "https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken";
 
     try {
       final response = await http.get(url);
@@ -102,7 +107,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = "https://udemy-training-af9d1.firebaseio.com/products.json";
+    final url =
+        "https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken";
     try {
       final response = await http.post(
         url,
@@ -137,7 +143,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
-          "https://udemy-training-af9d1.firebaseio.com/products/$id.json";
+          "https://udemy-training-af9d1.firebaseio.com/products/$id.json?auth=$authToken";
 
       await http.patch(url,
           body: json.encode({
@@ -154,7 +160,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url =
-        "https://udemy-training-af9d1.firebaseio.com/products/$id.json";
+        "https://udemy-training-af9d1.firebaseio.com/products/$id.json?auth=$authToken";
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
 
