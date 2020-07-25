@@ -74,9 +74,12 @@ class Products with ChangeNotifier {
 //    notifyListeners();
 //  }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
-        "https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken";
+        'https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken' +
+            filterString;
 
     try {
       final response = await http.get(url);
@@ -123,6 +126,7 @@ class Products with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
+          'creatorId': userId,
         }),
       );
 
