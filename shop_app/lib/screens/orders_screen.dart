@@ -22,7 +22,7 @@ class OrdersScreen extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           } else {
             if (dataSnapshot.error != null) {
-              return Center(child: Text('An error occured!'));
+              return Center(child: Text('An error occurred!'));
             } else {
               return Consumer<Orders>(
                 builder: (ctx, orderData, child) => ListView.builder(
