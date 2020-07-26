@@ -37,8 +37,9 @@ class PlacesListScreen extends StatelessWidget {
                         itemCount: greatPlaces.items.length,
                         itemBuilder: (ctx, i) => ListTile(
                           leading: CircleAvatar(
-                            backgroundImage:
-                                FileImage(greatPlaces.items[i].image),
+                            backgroundImage: FileImage(
+                              greatPlaces.items[i].image,
+                            ),
                           ),
                           title: Text(greatPlaces.items[i].title),
                           onTap: () {},
