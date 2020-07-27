@@ -1,4 +1,4 @@
-# personalexpenses
+# Personal Expenses
 
 Personal Expenses Application
 

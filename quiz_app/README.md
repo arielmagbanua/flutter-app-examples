@@ -1,4 +1,4 @@
-# quizapp
+# Quiz App
 
 Flutter training application
 

@@ -1,4 +1,4 @@
-# delimeals
+# Deli Meals
 
 Deli Meals Application
 

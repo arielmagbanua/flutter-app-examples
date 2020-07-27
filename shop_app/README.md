@@ -1,4 +1,4 @@
-# shopapp
+# Shop App
 
 Simple Ecommerce Application that uses Firebase realtime database for storage.
 
