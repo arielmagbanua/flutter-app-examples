@@ -1,16 +1,9 @@
-# great_places_app
+# Great Places App
 
-Great Places Application
+Store a location and an image in a sqlite database. Used camera for taking a picture and google maps for displaying and picking a location.
 
-## Getting Started
+![Great Places](../images/great_places_resized.gif)
 
-This project is a starting point for a Flutter application.
+## Requirements
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This application requires Geocoding API, Maps Static API, and Google Maps SDK therefore you need google api key.
