@@ -14,15 +14,18 @@ class _NewMessageState extends State<NewMessage> {
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
     final user = await FirebaseAuth.instance.currentUser();
+    final userdata = await Firestore.instance.collection('users').document(
+        user.uid).get();
     Firestore.instance.collection('chat').add({
       'text': _enteredMessage,
       'createdAt': Timestamp.now(),
       'userId': user.uid,
+      'username': userdata['username']
     });
 
     _controller.clear();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,9 +45,13 @@ class _NewMessageState extends State<NewMessage> {
             ),
           ),
           IconButton(
-            color: Theme.of(context).primaryColor,
+            color: Theme
+                .of(context)
+                .primaryColor,
             icon: Icon(Icons.send),
-            onPressed: _enteredMessage.trim().isEmpty ? null : _sendMessage,
+            onPressed: _enteredMessage
+                .trim()
+                .isEmpty ? null : _sendMessage,
           ),
         ],
       ),
