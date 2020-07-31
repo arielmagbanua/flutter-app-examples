@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Message bubble widget which holds a message from a user.
 class MessageBubble extends StatelessWidget {
   final String message;
   final String username;
@@ -7,6 +8,12 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
   final Key key;
 
+  /// The widget needs the following
+  /// [message] The message from the sender/user.
+  /// [username] The username of the sender/user.
+  /// [userImage] The avatar image of the sender/user.
+  /// [isMe] Indicates if the current message belongs to the logged sender/user.
+  /// [key] Optional widget key.
   MessageBubble(this.message, this.username, this.userImage, this.isMe,
       {this.key});
 

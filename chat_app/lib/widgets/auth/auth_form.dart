@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 
 import '../pickers/user_image_picker.dart';
 
+/// Widget for authentication form
 class AuthForm extends StatefulWidget {
+
+  /// Reference of submit function
+  /// This enables host widget to listen to submit event of the form.
   final void Function(
     String email,
     String password,
@@ -16,6 +20,8 @@ class AuthForm extends StatefulWidget {
 
   final bool isLoading;
 
+  /// [submitFn] Submit function reference
+  /// [isLoading] Indicates if the app is in loading state
   AuthForm(this.submitFn, this.isLoading);
 
   @override
@@ -34,6 +40,7 @@ class _AuthFormState extends State<AuthForm> {
     _userImageFile = image;
   }
 
+  /// Submits the form
   void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     // closes the keyboard

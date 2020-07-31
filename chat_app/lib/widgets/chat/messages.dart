@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import './message_bubble.dart';
 
+/// This widget list down all messages that were sent
 class Messages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,8 @@ class Messages extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
+
+            // obtain the docs from the snapshot
             final chatDocs = chatSnapshot.data.documents;
 
             return ListView.builder(

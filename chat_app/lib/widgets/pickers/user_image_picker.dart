@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+/// User image picker widget class
 class UserImagePicker extends StatefulWidget {
   final void Function(File pickedImage) imagePickFn;
 
+  /// Receives the function [imagePickFn] reference.
+  /// This enables widget users to listen for picked image.
   UserImagePicker(this.imagePickFn);
 
   @override
@@ -25,8 +28,11 @@ class _UserImagePickerState extends State<UserImagePicker> {
     );
 
     setState(() {
+      // set picked image variable this will update the preview
       _pickedImage = File(pickedImage.path);
     });
+
+    // call the image picked function
     widget.imagePickFn(_pickedImage);
   }
 

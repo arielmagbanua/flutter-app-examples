@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../widgets/auth/auth_form.dart';
 
+/// Widget for auth screen
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth-screen';
 
@@ -19,6 +20,12 @@ class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
 
+  /// Submits the auth form.
+  /// [email] The email of the user.
+  /// [password] The password of the user.
+  /// [image] User avatar image of the user.
+  /// [isLogin] Indicates whether in login mode or not.
+  /// [ctx] BuildContext
   void _submitAuthForm(
     String email,
     String password,
@@ -45,7 +52,7 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
 
-        // upload user image
+        // upload user image to firebase cloud storage
         final ref = FirebaseStorage.instance
             .ref()
             .child('user_images')
@@ -54,6 +61,7 @@ class _AuthScreenState extends State<AuthScreen> {
         await ref.putFile(image).onComplete;
         final url = await ref.getDownloadURL();
 
+        // Create a user document to firestore
         await Firestore.instance
             .collection('users')
             .document(authResult.user.uid)
@@ -70,6 +78,7 @@ class _AuthScreenState extends State<AuthScreen> {
         message = error.message;
       }
 
+      // Show SnackBar for errors
       Scaffold.of(ctx).showSnackBar(
         SnackBar(
           content: Text(message),
