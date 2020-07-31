@@ -6,6 +6,10 @@ Collection of my flutter application examples and training projects.
 
 A very simple quiz application.
 
+## [Deli Meals](https://github.com/arielmagbanua/flutter-app-examples/tree/master/deli_meals)
+
+A very simple deli meals catalog application.
+
 ## [Personal Expenses](https://github.com/arielmagbanua/flutter-app-examples/tree/master/personal_expenses)
 
 Simple personal expenses tracker with some cool visualization.
