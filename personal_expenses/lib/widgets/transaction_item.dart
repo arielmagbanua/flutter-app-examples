@@ -5,7 +5,13 @@ import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
 
+/// Card widget for transaction item.
 class TransactionItem extends StatefulWidget {
+
+  /// [key] Optional widget key
+  /// [transaction] The transaction object instance.
+  /// [deleteTx] The delete function which enables outside widget for deleting
+  /// the transaction.
   const TransactionItem({
     Key key,
     @required this.transaction,

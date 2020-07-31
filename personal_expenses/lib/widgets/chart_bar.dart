@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
+/// The widget for chart bar
 class ChartBar extends StatelessWidget {
   final String label;
   final double spendingAmount;
   final double spendingPercentageOfTotal;
 
+  /// [label] The text label for the chart
+  /// [spendingAmount] The amount spent for the transaction
+  /// [spendingPercentageOfTotal] The percentage of the spending against the
+  /// total spending.
   ChartBar(
     this.label,
     this.spendingAmount,

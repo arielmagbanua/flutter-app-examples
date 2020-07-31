@@ -1,13 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personalexpenses/widgets/adaptive_flat_button.dart';
 
+/// Widget for creating a new transaction
 class NewTransaction extends StatefulWidget {
   final Function addTx;
 
+  /// [addTx] Add transaction function reference.
+  /// This is for listening for new added transaction
   NewTransaction(this.addTx);
 
   @override
@@ -40,6 +41,7 @@ class _NewTransactionState extends State<NewTransaction> {
     Navigator.of(context).pop();
   }
 
+  /// Shows the date picker
   void _presentDatePicker() {
     showDatePicker(
       context: context,
@@ -51,6 +53,7 @@ class _NewTransactionState extends State<NewTransaction> {
         return;
       }
 
+      // set the selected date
       setState(() {
         _selectedDate = pickedDate;
       });

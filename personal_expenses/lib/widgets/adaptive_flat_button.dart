@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+/// FlatButton widget that supports android and iOS.
 class AdaptiveFlatButton extends StatelessWidget {
   final String text;
   final Function handler;

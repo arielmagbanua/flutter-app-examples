@@ -3,9 +3,11 @@ import 'package:intl/intl.dart';
 import './chart_bar.dart';
 import '../models/transaction.dart';
 
+/// Widget for the chart that holds different spending chart per day.
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
 
+  /// [recentTransactions] List of recent transactions made.
   Chart(this.recentTransactions);
 
   List<Map<String, Object>> get groupTransactionValues {
