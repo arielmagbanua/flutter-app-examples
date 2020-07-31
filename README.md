@@ -17,3 +17,7 @@ Simple Ecommerce Application that uses Firebase realtime database for storage.
 ## [Great Places App](https://github.com/arielmagbanua/flutter-app-examples/tree/master/great_places_app)
 
 Store a location and an image in a sqlite database. Used camera for taking a picture and google maps for displaying and picking a location.
+
+## [Chat App](https://github.com/arielmagbanua/flutter-app-examples/tree/master/chat_app)
+
+Very basic chat application
