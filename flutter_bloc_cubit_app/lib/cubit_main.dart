@@ -15,7 +15,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider(create: (_) => CounterCubit(), child: CounterPage()),
+      home: BlocProvider(
+        create: (_) => CounterCubit(),
+        child: CounterPage(),
+      ),
     );
   }
 }
