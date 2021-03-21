@@ -1,4 +1,4 @@
-# number_trivia
+# features.number_trivia
 
 Number Trivia
 
