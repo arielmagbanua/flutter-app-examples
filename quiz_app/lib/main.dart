@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import './result.dart';
+
 import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   final _questions = const [
     {
-      'questionText': "What's your favorite color?",
+      'questionText': 'What\'s your favorite color?',
       'answers': [
         {'text': 'Black', 'score': 10},
         {'text': 'Red', 'score': 5},
@@ -23,21 +22,21 @@ class _MyAppState extends State<MyApp> {
       ],
     },
     {
-      'questionText': "What's your favorite animal?",
+      'questionText': 'What\'s your favorite animal?',
       'answers': [
-        {'text': 'Rabbit', 'score': 1},
-        {'text': 'Snake', 'score': 10},
-        {'text': 'Elephant', 'score': 3},
-        {'text': 'Lion', 'score': 5},
+        {'text': 'Rabbit', 'score': 3},
+        {'text': 'Snake', 'score': 11},
+        {'text': 'Elephant', 'score': 5},
+        {'text': 'Lion', 'score': 9},
       ],
     },
     {
-      'questionText': "What's your favorite instructor?",
+      'questionText': 'What\'s your favorite instructor?',
       'answers': [
-        {'text': 'Max', 'score': 10},
-        {'text': 'Ariel', 'score': 1},
-        {'text': 'Brent', 'score': 3},
-        {'text': 'John', 'score': 5},
+        {'text': 'Max', 'score': 1},
+        {'text': 'Max', 'score': 1},
+        {'text': 'Max', 'score': 1},
+        {'text': 'Max', 'score': 1},
       ],
     },
   ];
@@ -53,17 +52,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _answerQuestion(int score) {
-    setState(() {
-      _questionIndex = _questionIndex + 1;
-    });
-
-    if (_questionIndex < _questions.length) {
-      print('We have more questions!');
-    }
-
     _totalScore += score;
 
+    setState(() {
+      ++_questionIndex;
+    });
     print(_questionIndex);
+    if (_questionIndex < _questions.length) {
+      print('We have more questions!');
+    } else {
+      print('No more questions!');
+    }
   }
 
   @override
@@ -75,9 +74,9 @@ class _MyAppState extends State<MyApp> {
         ),
         body: _questionIndex < _questions.length
             ? Quiz(
-                questions: _questions,
                 answerQuestion: _answerQuestion,
                 questionIndex: _questionIndex,
+                questions: _questions,
               )
             : Result(_totalScore, _resetQuiz),
       ),
