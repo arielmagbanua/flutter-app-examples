@@ -43,17 +43,34 @@ main() {
       expect(result, equals(tNumberTriviaModel));
     });
 
-    test('Should throw CacheException when there is no cached value.',
-        () async {
+    test('Should throw CacheException when there is no cached value', () async {
       // arrange
-      when(mockSharedPreferences.getString(any))
-          .thenReturn(null);
+      when(mockSharedPreferences.getString(any)).thenReturn(null);
 
       // act
       final call = dataSource.getLastNumberTrivia;
 
       // assert
       expect(() => call(), throwsA(isA<CacheException>()));
+    });
+  });
+
+  group('cacheNumberTrivia', () {
+    final tNumberTriviaModel = NumberTriviaModel(
+      text: 'test trivia',
+      number: 1,
+    );
+
+    test('Should call SharedPreferences to cache the data', () async {
+      // act
+      dataSource.cacheNumberTrivia(tNumberTriviaModel);
+
+      // assert
+      final expectedJsonString = json.encode(tNumberTriviaModel.toJson());
+      verify(mockSharedPreferences.setString(
+        NumberTriviaLocalDataSourceImpl.CACHED_NUMBER_TRIVIA,
+        expectedJsonString,
+      ));
     });
   });
 }
