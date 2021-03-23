@@ -9,7 +9,7 @@ import 'package:features.number_trivia/features/number_trivia/data/repositories/
 import 'package:features.number_trivia/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:features.number_trivia/features/number_trivia/data/datasources/number_trivia_local_data_source.dart';
 import 'package:features.number_trivia/features/number_trivia/data/datasources/number_trivia_remote_data_source.dart';
-import 'package:features.number_trivia/core/platform/network_info.dart';
+import 'package:features.number_trivia/core/network/network_info.dart';
 
 class MockRemoteDataSource extends Mock
     implements NumberTriviaRemoteDataSource {}
