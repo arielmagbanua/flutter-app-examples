@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -7,6 +8,8 @@ import 'package:features.number_trivia/features/number_trivia/domain/usecases/ge
 import 'package:features.number_trivia/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:features.number_trivia/features/number_trivia/domain/usecases/get_concrete_number_trivia.dart';
 import 'package:features.number_trivia/core/util/input_converter.dart';
+import 'package:features.number_trivia/core/usecases/usecase.dart';
+import 'package:features.number_trivia/core/error/failures.dart';
 
 part './number_trivia_event.dart';
 
@@ -31,9 +34,7 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
         super(Empty());
 
   @override
-  Stream<NumberTriviaState> mapEventToState(
-    NumberTriviaEvent event,
-  ) async* {
+  Stream<NumberTriviaState> mapEventToState(NumberTriviaEvent event) async* {
     if (event is GetTriviaForConcreteNumber) {
       final inputEither =
           inputConverter.stringToUnsignedInteger(event.numberString);
@@ -42,8 +43,37 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
         (failure) async* {
           yield Error(message: INVALID_INPUT_FAILURE_MESSAGE);
         },
-        (integer) => throw UnimplementedError(),
+        (integer) async* {
+          yield Loading();
+          final failureOrTrivia =
+              await getConcreteNumberTrivia(Params(number: integer));
+          yield* _eitherLoadedOrErrorState(failureOrTrivia);
+        },
       );
+    } else if (event is GetTriviaForRandomNumber) {
+      yield Loading();
+      final failureOrTrivia = await getRandomNumberTrivia(NoParams());
+      yield* _eitherLoadedOrErrorState(failureOrTrivia);
+    }
+  }
+
+  Stream<NumberTriviaState> _eitherLoadedOrErrorState(
+    Either<Failure, NumberTrivia> failureOrTrivia,
+  ) async* {
+    yield failureOrTrivia.fold(
+      (failure) => Error(message: _mapFailureToMessage(failure)),
+      (trivia) => Loaded(trivia: trivia),
+    );
+  }
+
+  String _mapFailureToMessage(Failure failure) {
+    switch (failure.runtimeType) {
+      case ServerFailure:
+        return SERVER_FAILURE_MESSAGE;
+      case CacheFailure:
+        return CACHE_FAILURE_MESSAGE;
+      default:
+        return 'Unexpected error.';
     }
   }
 }
