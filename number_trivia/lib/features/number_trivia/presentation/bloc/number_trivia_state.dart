@@ -8,3 +8,35 @@ class NumberTriviaInitial extends NumberTriviaState {
   @override
   List<Object> get props => [];
 }
+
+class Empty extends NumberTriviaState {
+  @override
+  List<Object> get props => [];
+}
+
+class Loading extends NumberTriviaState {
+  @override
+  List<Object> get props => [];
+}
+
+class Loaded extends NumberTriviaState {
+  final NumberTrivia trivia;
+
+  Loaded({
+    @required this.trivia,
+  });
+
+  @override
+  List<Object> get props => [trivia];
+}
+
+class ErrorState extends NumberTriviaState {
+  final String message;
+
+  ErrorState({
+    @required this.message,
+  });
+
+  @override
+  List<Object> get props => [message];
+}
