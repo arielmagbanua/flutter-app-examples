@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:features.number_trivia/features/number_trivia/presentation/widgets/widgets.dart';
-import 'package:features.number_trivia/features/number_trivia/presentation/bloc/number_trivia_bloc.dart';
+import '../bloc/number_trivia_bloc.dart';
+import '../widgets/loading_widget.dart';
+import '../widgets/message_display.dart';
+import '../widgets/trivia_controls.dart';
+import '../widgets/trivia_display.dart';
 import '../../../../injector_container.dart';
 
 class NumberTriviaPage extends StatelessWidget {
@@ -27,14 +30,9 @@ class NumberTriviaPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SizedBox(height: 10),
-              // Top half
               BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
                 builder: (context, state) {
-                  if (state is Empty) {
-                    return MessageDisplay(
-                      message: 'Start searching!',
-                    );
-                  } else if (state is Loading) {
+                  if (state is Loading) {
                     return LoadingWidget();
                   } else if (state is Loaded) {
                     return TriviaDisplay(numberTrivia: state.trivia);

@@ -1,6 +1,6 @@
-# features.number_trivia
+# number_trivia
 
-Number Trivia
+App build with Clean Architecture and TDD
 
 ## Getting Started
 

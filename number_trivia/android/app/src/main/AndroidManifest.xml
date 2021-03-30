@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.malupets.number_trivia">
+    package="com.number_trivia">
    <application
         android:label="number_trivia"
         android:icon="@mipmap/ic_launcher">

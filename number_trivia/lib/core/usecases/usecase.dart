@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import 'package:features.number_trivia/core/error/failures.dart';
-import 'package:features.number_trivia/features/number_trivia/domain/entities/number_trivia.dart';
+import '../error/failures.dart';
+import '../../features/number_trivia/domain/entities/number_trivia.dart';
 
 abstract class UseCase<Type, Params> {
   Future<Either<Failure, NumberTrivia>> call(Params params);
