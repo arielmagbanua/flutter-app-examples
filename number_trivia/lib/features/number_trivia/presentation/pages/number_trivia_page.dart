@@ -30,14 +30,9 @@ class NumberTriviaPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SizedBox(height: 10),
-              // Top half
               BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
                 builder: (context, state) {
-                  if (state is Empty) {
-                    return MessageDisplay(
-                      message: 'Start searching!',
-                    );
-                  } else if (state is Loading) {
+                  if (state is Loading) {
                     return LoadingWidget();
                   } else if (state is Loaded) {
                     return TriviaDisplay(numberTrivia: state.trivia);
