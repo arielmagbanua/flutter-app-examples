@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.malupets.features.number_trivia">
+    package="com.malupets.number_trivia">
    <application
-        android:label="features.number_trivia"
+        android:label="number_trivia"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
