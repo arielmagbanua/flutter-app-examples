@@ -23,7 +23,7 @@ class Loaded extends NumberTriviaState {
   final NumberTrivia trivia;
 
   Loaded({
-    @required this.trivia,
+    required this.trivia,
   });
 
   @override
@@ -34,7 +34,7 @@ class Error extends NumberTriviaState {
   final String message;
 
   Error({
-    @required this.message,
+    required this.message,
   });
 
   @override

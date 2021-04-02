@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:number_trivia/core/usecases/usecase.dart';
 import 'package:number_trivia/features/number_trivia/domain/entities/number_trivia.dart';
@@ -11,9 +11,10 @@ class MockNumberTriviaRepository extends Mock
     implements NumberTriviaRepository {
 }
 
-main() {
-  GetRandomNumberTrivia usecase;
-  MockNumberTriviaRepository mockNumberTriviaRepository;
+void main() {
+  late GetRandomNumberTrivia usecase;
+  late MockNumberTriviaRepository mockNumberTriviaRepository;
+
   setUp(() {
     mockNumberTriviaRepository = MockNumberTriviaRepository();
     usecase = GetRandomNumberTrivia(mockNumberTriviaRepository);
@@ -23,15 +24,15 @@ main() {
 
   test('Should get trivia from the repository', () async {
     // arrange
-    when(mockNumberTriviaRepository.getRandomNumberTrivia())
-        .thenAnswer((_)  async => Right(nNumberTrivia));
+    when(() => mockNumberTriviaRepository.getRandomNumberTrivia())
+        .thenAnswer((_) => Future.value(Right(nNumberTrivia)));
 
     // act
     final result = await usecase(NoParams());
 
     // assert
     expect(result, Right(nNumberTrivia));
-    verify(mockNumberTriviaRepository.getRandomNumberTrivia());
+    verify(() => mockNumberTriviaRepository.getRandomNumberTrivia());
     verifyNoMoreInteractions(mockNumberTriviaRepository);
   });
 }

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 import '../error/failures.dart';
 import '../../features/number_trivia/domain/entities/number_trivia.dart';
@@ -17,7 +16,7 @@ class NoParams extends Equatable {
 class Params extends Equatable {
   final int number;
 
-  Params({@required this.number});
+  Params({required this.number});
 
   @override
   List<Object> get props => [number];

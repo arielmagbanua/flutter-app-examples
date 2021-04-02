@@ -13,6 +13,7 @@ main() {
   group('stringToUnsignedInt', () {
     test('Should return an integer when the string represents an unsigned integer', () async {
       // arrange
+      inputConverter = InputConverter();
       final str = '123';
       // act
       final result = inputConverter.stringToUnsignedInteger(str);
@@ -23,6 +24,7 @@ main() {
 
     test('Should return a failure when the string is not an integer', () async {
       // arrange
+      inputConverter = InputConverter();
       final str = 'abc';
       // act
       final result = inputConverter.stringToUnsignedInteger(str);
@@ -32,6 +34,7 @@ main() {
 
     test('Should return a failure when the string is a negative integer', () async {
       // arrange
+      inputConverter = InputConverter();
       final str = '-123';
       // act
       final result = inputConverter.stringToUnsignedInteger(str);
