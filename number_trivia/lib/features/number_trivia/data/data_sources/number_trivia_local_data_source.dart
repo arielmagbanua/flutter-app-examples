@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../models/number_trivia_model.dart';
@@ -21,7 +20,7 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
   final SharedPreferences sharedPreferences;
 
   NumberTriviaLocalDataSourceImpl({
-    @required this.sharedPreferences,
+    required this.sharedPreferences,
   });
 
   @override
