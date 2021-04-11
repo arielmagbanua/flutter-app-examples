@@ -1,4 +1,0 @@
-*.dart text=auto eol=lf
-*.md text=auto eol=lf
-*.lock text=auto eol=lf
-*.yaml text=auto eol=lf
