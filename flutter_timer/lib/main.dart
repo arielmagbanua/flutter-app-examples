@@ -48,7 +48,7 @@ class Timer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 100.0),
+                padding: const EdgeInsets.symmetric(vertical: 100.0),
                 child: Center(
                   child: BlocBuilder<TimerBloc, TimerState>(
                     builder: (context, state) {
