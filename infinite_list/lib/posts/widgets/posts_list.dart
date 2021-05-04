@@ -33,16 +33,31 @@ class _PostsListState extends State<PostsList> {
               return const Center(child: Text('no posts'));
             }
 
-            return ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.posts.length
-                    ? BottomLoader()
-                    : PostListItem(post: state.posts[index]);
+            return RefreshIndicator(
+              onRefresh: () {
+                return Future.delayed(
+                  Duration(seconds: 1),
+                  () {
+                    _postBloc.add(ListRefresh());
+
+                    // show snack bar upon successful refresh.
+                    final snackBar = SnackBar(content: Text('List refreshed!'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                );
               },
-              itemCount: state.hasReachedMax
-                  ? state.posts.length
-                  : state.posts.length + 1,
-              controller: _scrollController,
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.posts.length
+                      ? BottomLoader()
+                      : PostListItem(post: state.posts[index]);
+                },
+                itemCount: state.hasReachedMax
+                    ? state.posts.length
+                    : state.posts.length + 1,
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+              ),
             );
 
           default:
