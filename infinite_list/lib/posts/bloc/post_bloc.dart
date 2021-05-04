@@ -43,7 +43,19 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   Stream<PostState> mapEventToState(
     PostEvent event,
   ) async* {
-    yield await _mapPostFetchedToState(state);
+    if (event is ListRefresh) {
+      // refreshing the list so return an initial state again
+      final emptyState = state.copyWith(
+        status: PostStatus.initial,
+        posts: <Post>[],
+        hasReachedMax: false
+      );
+
+      yield emptyState;
+      yield await _mapPostFetchedToState(state);
+    } else {
+      yield await _mapPostFetchedToState(state);
+    }
   }
 
   ///_mapPostFetchedToState
