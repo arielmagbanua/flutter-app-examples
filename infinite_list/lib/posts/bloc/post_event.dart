@@ -8,3 +8,6 @@ abstract class PostEvent extends Equatable {
 
 /// Event that signifies to fetch additional posts.
 class PostFetched extends PostEvent {}
+
+/// Event that signifies to refresh the post list.
+class ListRefresh extends PostEvent {}
