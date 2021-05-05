@@ -4,5 +4,5 @@ import '../entities/photo.dart';
 ///
 /// The repository for photos
 abstract class PhotosRepository {
-  Future<Photo> getPhotos({int start = 0, int limit = 20});
+  Future<List<Photo>> getPhotos({int start = 0, int limit = 20});
 }
