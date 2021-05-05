@@ -1,6 +1,6 @@
 # infinite_grid_list
 
-Inifnite Scrolling Grid List using Bloc / Cubit
+Infinite Scrolling Grid List using Bloc / Cubit
 
 ## Getting Started
 
