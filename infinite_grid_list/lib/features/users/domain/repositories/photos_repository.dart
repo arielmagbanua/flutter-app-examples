@@ -1,4 +1,4 @@
-import 'package:infinite_grid_list/features/users/domain/entities/photo.dart';
+import '../entities/photo.dart';
 
 /// PhotosRepository
 ///
