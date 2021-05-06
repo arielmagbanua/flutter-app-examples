@@ -7,6 +7,7 @@ import '../../domain/entities/photo.dart';
 import '../../domain/use_cases/get_photos.dart';
 
 part 'photos_event.dart';
+
 part 'photos_state.dart';
 
 class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
@@ -16,9 +17,9 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
 
   @override
   Stream<Transition<PhotosEvent, PhotosState>> transformEvents(
-      Stream<PhotosEvent> events,
-      TransitionFunction<PhotosEvent, PhotosState> transitionFn,
-      ) {
+    Stream<PhotosEvent> events,
+    TransitionFunction<PhotosEvent, PhotosState> transitionFn,
+  ) {
     return super.transformEvents(
       events.debounceTime(const Duration(milliseconds: 500)),
       transitionFn,
@@ -55,8 +56,6 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
     }
 
     return state.copyWith(
-      photos: List.of(state.photos)..addAll(photos),
-      hasReachedMax: false
-    );
+        photos: List.of(state.photos)..addAll(photos), hasReachedMax: false);
   }
 }
