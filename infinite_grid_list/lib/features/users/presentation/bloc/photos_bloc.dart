@@ -56,6 +56,8 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
     }
 
     return state.copyWith(
-        photos: List.of(state.photos)..addAll(photos), hasReachedMax: false);
+      photos: List.of(state.photos)..addAll(photos),
+      hasReachedMax: false,
+    );
   }
 }
