@@ -8,8 +8,6 @@ part 'photos_event.dart';
 part 'photos_state.dart';
 
 class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
-  static const POST_LIMIT = 20;
-
   final GetPhotos getPhotos;
 
   PhotosBloc({required this.getPhotos}) : super(PhotosInitial());
