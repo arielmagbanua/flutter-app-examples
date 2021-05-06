@@ -16,7 +16,7 @@ class GetPhotos extends UseCase<List<Photo>, int> {
   /// This makes the class callable.
   @override
   Future<List<Photo>> call([int? start = 0, int? limit = 20]) {
-    return this.photosRepository.getPhotos(
+    return photosRepository.getPhotos(
           start: start ?? 0,
           limit: limit ?? 20,
         );
