@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:infinite_grid_list/features/users/domain/entities/photo.dart';
-import 'package:infinite_grid_list/features/users/domain/use_cases/get_photos.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../../domain/entities/photo.dart';
+import '../../domain/use_cases/get_photos.dart';
 
 part 'photos_event.dart';
 part 'photos_state.dart';
@@ -11,6 +13,17 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
   final GetPhotos getPhotos;
 
   PhotosBloc({required this.getPhotos}) : super(PhotosInitial());
+
+  @override
+  Stream<Transition<PhotosEvent, PhotosState>> transformEvents(
+      Stream<PhotosEvent> events,
+      TransitionFunction<PhotosEvent, PhotosState> transitionFn,
+      ) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 500)),
+      transitionFn,
+    );
+  }
 
   @override
   Stream<PhotosState> mapEventToState(
