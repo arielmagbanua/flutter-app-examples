@@ -30,20 +30,31 @@ class _PhotoGridState extends State<PhotoGrid> {
             return const Center(child: Text('Failed to fetch photos!'));
 
           case PhotosStatus.success:
-            return GridView.builder(
-              gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.photos.length
-                    ? BottomLoader()
-                    : PhotoCard(state.photos[index]);
+            return RefreshIndicator(
+              onRefresh: () {
+                return Future.delayed(Duration(seconds: 1), () {
+                  _photosBloc.add(Refresh());
+
+                  // show snack bar upon successful refresh.
+                  final snackBar = SnackBar(content: Text('List refreshed!'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                });
               },
-              itemCount: state.hasReachedMax
-                  ? state.photos.length
-                  : state.photos.length + 1,
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
+              child: GridView.builder(
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.photos.length
+                      ? BottomLoader()
+                      : PhotoCard(state.photos[index]);
+                },
+                itemCount: state.hasReachedMax
+                    ? state.photos.length
+                    : state.photos.length + 1,
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+              ),
             );
 
           default:
