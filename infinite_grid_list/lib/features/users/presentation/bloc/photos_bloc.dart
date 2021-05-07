@@ -7,13 +7,12 @@ import '../../domain/entities/photo.dart';
 import '../../domain/use_cases/get_photos.dart';
 
 part 'photos_event.dart';
-
 part 'photos_state.dart';
 
 class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
   final GetPhotos getPhotos;
 
-  PhotosBloc({required this.getPhotos}) : super(PhotosInitial());
+  PhotosBloc({required this.getPhotos}) : super(PhotosState());
 
   @override
   Stream<Transition<PhotosEvent, PhotosState>> transformEvents(
@@ -31,33 +30,49 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
     PhotosEvent event,
   ) async* {
     if (event is Refresh) {
-      yield PhotosInitial();
+      // refreshing the list so return an initial state again
+      yield state.copyWith(
+          status: PhotosStatus.initial,
+          photos: <Photo>[],
+          hasReachedMax: false
+      );
+
+      yield await _mapPhotosFetchedToState(state);
     } else {
-      yield await _mapState(state);
+      yield await _mapPhotosFetchedToState(state);
     }
   }
 
-  Future<PhotosState> _mapState(PhotosState state) async {
-    if (state is PhotosSuccess && state.hasReachedMax) {
+  Future<PhotosState> _mapPhotosFetchedToState(PhotosState state) async {
+    if (state.hasReachedMax) {
       return state;
     }
 
-    if (state is PhotosInitial) {
-      final List<Photo> photos = await getPhotos(0);
-      return PhotosSuccess(photos: photos, hasReachedMax: false);
+    try {
+      if (state.status == PhotosStatus.initial) {
+        final List<Photo> photos = await getPhotos();
+        return state.copyWith(
+          status: PhotosStatus.success,
+          photos: photos,
+          hasReachedMax: false,
+        );
+      }
+
+      final List<Photo> photos = await getPhotos(state.photos.length);
+
+      if (photos.isEmpty) {
+        // No more photos available therefore we reached the limit
+        // now return a state that signifies that we reached the limit of posts.
+        return state.copyWith(hasReachedMax: true);
+      }
+
+      return state.copyWith(
+        status: PhotosStatus.success,
+        photos: List.of(state.photos)..addAll(photos),
+        hasReachedMax: false,
+      );
+    } on Exception {
+      return state.copyWith(status: PhotosStatus.failure);
     }
-
-    state = state as PhotosSuccess;
-
-    final List<Photo> photos = await getPhotos(state.photos.length);
-
-    if (photos.isEmpty) {
-      return state.copyWith(hasReachedMax: true);
-    }
-
-    return state.copyWith(
-      photos: List.of(state.photos)..addAll(photos),
-      hasReachedMax: false,
-    );
   }
 }
