@@ -25,7 +25,7 @@ class _PhotoGridState extends State<PhotoGrid> {
   Widget build(BuildContext context) {
     return BlocBuilder<PhotosBloc, PhotosState>(
       builder: (BuildContext context, state) {
-        switch(state.status) {
+        switch (state.status) {
           case PhotosStatus.failure:
             return const Center(child: Text('Failed to fetch photos!'));
 
@@ -35,9 +35,13 @@ class _PhotoGridState extends State<PhotoGrid> {
                 crossAxisCount: 2,
               ),
               itemBuilder: (BuildContext context, int index) {
-                return index >= state.photos.length ? BottomLoader() : PhotoCard(state.photos[index]);
+                return index >= state.photos.length
+                    ? BottomLoader()
+                    : PhotoCard(state.photos[index]);
               },
-              itemCount: state.hasReachedMax ? state.photos.length : state.photos.length + 1,
+              itemCount: state.hasReachedMax
+                  ? state.photos.length
+                  : state.photos.length + 1,
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
             );
