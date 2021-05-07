@@ -1,55 +1,50 @@
 part of 'photos_bloc.dart';
 
-abstract class PhotosState extends Equatable {
-  const PhotosState();
-}
+/// Different status of photos fetching.
+///
+/// [initial] - will tell the presentation layer it needs to
+/// render a loading indicator while the initial batch of posts are loaded.
+///
+/// [success] - will tell the presentation layer it has content to render.
+///
+/// [failure] - will tell the presentation layer that
+/// an error has occurred while fetching photos.
+enum PhotosStatus { initial, success, failure }
 
-/// Initial state
-class PhotosInitial extends PhotosState {
+class PhotosState extends Equatable {
+  /// The status of photos fetching.
+  final PhotosStatus status;
+
   /// The list of fetched posts.
   final List<Photo> photos;
 
   /// Indicates whether the app has reached the limit of available posts.
   final bool hasReachedMax;
 
-  const PhotosInitial({
+  const PhotosState({
+    this.status = PhotosStatus.initial,
     this.photos = const <Photo>[],
     this.hasReachedMax = false,
   });
 
-  @override
-  List<Object> get props => [];
-}
-
-/// Successful state
-class PhotosSuccess extends PhotosState {
-  /// The list of fetched posts.
-  final List<Photo> photos;
-
-  /// Indicates whether the app has reached the limit of available posts.
-  final bool hasReachedMax;
-
-  const PhotosSuccess({
-    this.photos = const <Photo>[],
-    this.hasReachedMax = false,
-  });
-
-  PhotosSuccess copyWith({
+  /// Create a new instance of the state.
+  PhotosState copyWith({
+    PhotosStatus? status,
     List<Photo>? photos,
     bool? hasReachedMax,
   }) {
-    return PhotosSuccess(
+    return PhotosState(
+      status: status ?? this.status,
       photos: photos ?? this.photos,
-      hasReachedMax: hasReachedMax != null ? hasReachedMax : false,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }
 
   @override
-  List<Object> get props => [photos, hasReachedMax];
-}
+  String toString() {
+    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${photos.length} }''';
+  }
 
-/// Failure state
-class PhotosFailure extends PhotosState {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [status, photos, hasReachedMax];
 }
