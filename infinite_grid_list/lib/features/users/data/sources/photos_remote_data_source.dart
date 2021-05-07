@@ -24,25 +24,27 @@ class PhotosRemoteDataSourceImplementation extends PhotosRemoteDataSource {
   /// [start] - The starting index of the list of photos.
   /// [limit] - The limit of photos per api call.
   Future<List<PhotoModel>> getPhotos({int start = 0, int limit = 20}) async {
-    final endpointUrl = Uri.http(
+    final endpointUrl = Uri.https(
       PhotosRemoteDataSource.API_BASE_URL,
       PhotosRemoteDataSource.API_PHOTOS,
-      <String, int>{'_start': start, '_limit': limit},
+      <String, String>{'_start': '$start', '_limit': '$limit'},
     );
 
     final response = await client.get(endpointUrl);
     if (response.statusCode == 200) {
       final body = json.decode(response.body) as List;
 
-      return body.map((dynamic json) {
+      final photos = body.map((dynamic json) {
         return PhotoModel(
           id: json['id'] as int,
           albumId: json['albumId'] as int,
-          title: ['title'] as String,
-          url: ['url'] as String,
-          thumbnailUrl: ['thumbnailUrl'] as String,
+          title: json['title'] as String,
+          url: json['url'] as String,
+          thumbnailUrl: json['thumbnailUrl'] as String,
         );
       }).toList();
+
+      return photos;
     }
 
     throw Exception('Error fetching photos.');
