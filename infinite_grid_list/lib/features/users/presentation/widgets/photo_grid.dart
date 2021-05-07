@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bottom_loader.dart';
+import 'photo_card.dart';
 import '../bloc/photos_bloc.dart';
 
 class PhotoGrid extends StatefulWidget {
@@ -33,7 +35,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                 crossAxisCount: 2,
               ),
               itemBuilder: (BuildContext context, int index) {
-                return index >= state.photos.length ? Text('TODO LOADING') : Text(state.photos[index].title);
+                return index >= state.photos.length ? BottomLoader() : PhotoCard(state.photos[index]);
               },
               itemCount: state.hasReachedMax ? state.photos.length : state.photos.length + 1,
               controller: _scrollController,
