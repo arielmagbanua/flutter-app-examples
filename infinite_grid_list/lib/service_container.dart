@@ -7,29 +7,25 @@ import 'features/users/domain/repositories/photos_repository.dart';
 import 'features/users/domain/use_cases/get_photos.dart';
 import 'features/users/presentation/bloc/photos_bloc.dart';
 
-class ServiceContainer {
-  final GetIt sl;
+final sl = GetIt.instance;
 
-  ServiceContainer(GetIt? sl) : this.sl = sl ?? GetIt.instance;
+Future<void> init() async {
+  // blocs
+  sl.registerFactory(() => PhotosBloc(getPhotos: sl()));
 
-  Future<void> call() async {
-    // blocs
-    sl.registerFactory(() => PhotosBloc(getPhotos: sl()));
+  // use cases
+  sl.registerLazySingleton(() => GetPhotos(sl()));
 
-    // use cases
-    sl.registerLazySingleton(() => GetPhotos(sl()));
+  // repositories
+  sl.registerLazySingleton<PhotosRepository>(
+        () => PhotosRepositoryImplementation(photosRemoteDataSource: sl()),
+  );
 
-    // repositories
-    sl.registerLazySingleton<PhotosRepository>(
-      () => PhotosRepositoryImplementation(photosRemoteDataSource: sl()),
-    );
+  // data sources
+  sl.registerLazySingleton<PhotosRemoteDataSource>(
+        () => PhotosRemoteDataSourceImplementation(client: sl()),
+  );
 
-    // data sources
-    sl.registerLazySingleton<PhotosRemoteDataSource>(
-      () => PhotosRemoteDataSourceImplementation(client: sl()),
-    );
-
-    // external packages
-    sl.registerLazySingleton(() => http.Client());
-  }
+  // external packages
+  sl.registerLazySingleton(() => http.Client());
 }
