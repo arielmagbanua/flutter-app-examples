@@ -1,0 +1,6 @@
+*.java text=auto eol=lf
+*.md text=auto eol=lf
+*.dart text=auto eol=lf
+*.json text=auto eol=lf
+*.lock text=auto eol=lf
+*.md text=auto eol=lf

@@ -1,0 +1,5 @@
+*.dart text=auto eol=lf
+*.java text=auto eol=lf
+*.yaml text=auto eol=lf
+*.lock text=auto eol=lf
+*.json text=auto eol=lf
