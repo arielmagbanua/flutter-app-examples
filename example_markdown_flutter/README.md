@@ -1,4 +1,4 @@
-# examplemarkdownflutter
+# Example Markdown Flutter
 
 Markdown widget example for flutter
 
