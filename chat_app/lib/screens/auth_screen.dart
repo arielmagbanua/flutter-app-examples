@@ -34,7 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
     bool isLogin,
     BuildContext ctx,
   ) async {
-    AuthResult authResult;
+    UserCredential userCredential;
 
     try {
       setState(() {
@@ -42,12 +42,12 @@ class _AuthScreenState extends State<AuthScreen> {
       });
 
       if (isLogin) {
-        authResult = await _auth.signInWithEmailAndPassword(
+        userCredential = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
       } else {
-        authResult = await _auth.createUserWithEmailAndPassword(
+        userCredential = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -56,16 +56,17 @@ class _AuthScreenState extends State<AuthScreen> {
         final ref = FirebaseStorage.instance
             .ref()
             .child('user_images')
-            .child(authResult.user.uid + '.jpg');
+            .child(userCredential.user!.uid + '.jpg');
 
-        await ref.putFile(image).onComplete;
+        await ref.putFile(image).whenComplete(() => true);
+
         final url = await ref.getDownloadURL();
 
         // Create a user document to firestore
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection('users')
-            .document(authResult.user.uid)
-            .setData({
+            .doc(userCredential.user!.uid)
+            .set({
           'username': username,
           'email': email,
           'image_url': url,
@@ -75,7 +76,7 @@ class _AuthScreenState extends State<AuthScreen> {
       var message = 'An error occurred, please check your credentials!';
 
       if (error.message != null) {
-        message = error.message;
+        message = error.message!;
       }
 
       // Show SnackBar for errors

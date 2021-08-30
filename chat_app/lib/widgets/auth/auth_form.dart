@@ -6,7 +6,6 @@ import '../pickers/user_image_picker.dart';
 
 /// Widget for authentication form
 class AuthForm extends StatefulWidget {
-
   /// Reference of submit function
   /// This enables host widget to listen to submit event of the form.
   final void Function(
@@ -34,7 +33,7 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
-  File _userImageFile;
+  late File _userImageFile;
 
   void _pickedImage(File image) {
     _userImageFile = image;
@@ -42,11 +41,11 @@ class _AuthFormState extends State<AuthForm> {
 
   /// Submits the form
   void _trySubmit() {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     // closes the keyboard
     FocusScope.of(context).unfocus();
 
-    if (_userImageFile == null && !_isLogin) {
+    if (!_isLogin) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please pick an image.'),
@@ -57,7 +56,7 @@ class _AuthFormState extends State<AuthForm> {
     }
 
     if (isValid) {
-      _formKey.currentState.save();
+      _formKey.currentState!.save();
 
       widget.submitFn(
         _userEmail.trim(),
@@ -90,7 +89,7 @@ class _AuthFormState extends State<AuthForm> {
                     textCapitalization: TextCapitalization.none,
                     enableSuggestions: false,
                     validator: (value) {
-                      if (value.isEmpty || !value.contains('@')) {
+                      if (value!.isEmpty || !value.contains('@')) {
                         return 'Please enter a valid email address.';
                       }
 
@@ -101,7 +100,7 @@ class _AuthFormState extends State<AuthForm> {
                       labelText: 'Email Address',
                     ),
                     onSaved: (value) {
-                      _userEmail = value;
+                      _userEmail = value!;
                     },
                   ),
                   if (!_isLogin)
@@ -111,7 +110,7 @@ class _AuthFormState extends State<AuthForm> {
                       textCapitalization: TextCapitalization.words,
                       enableSuggestions: false,
                       validator: (value) {
-                        if (value.isEmpty || value.length < 4) {
+                        if (value!.isEmpty || value.length < 4) {
                           return 'Please enter at least 4 characters';
                         }
 
@@ -121,13 +120,13 @@ class _AuthFormState extends State<AuthForm> {
                         labelText: 'Username',
                       ),
                       onSaved: (value) {
-                        _userName = value;
+                        _userName = value!;
                       },
                     ),
                   TextFormField(
                     key: ValueKey('password'),
                     validator: (value) {
-                      if (value.isEmpty || value.length < 7) {
+                      if (value!.isEmpty || value.length < 7) {
                         return 'Password must at least 7 characters long.';
                       }
 
@@ -138,28 +137,27 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                     obscureText: true,
                     onSaved: (value) {
-                      _userPassword = value;
+                      _userPassword = value!;
                     },
                   ),
                   SizedBox(height: 12),
                   if (widget.isLoading) CircularProgressIndicator(),
                   if (!widget.isLoading)
-                    RaisedButton(
-                      child: Text(_isLogin ? 'Login' : 'Signup'),
+                    ElevatedButton(
                       onPressed: _trySubmit,
+                      child: Text(_isLogin ? 'Login' : 'Signup'),
                     ),
                   if (!widget.isLoading)
-                    FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      child: Text(_isLogin
-                          ? 'Create new account'
-                          : 'I already have an account.'),
+                    TextButton(
                       onPressed: () {
                         setState(() {
                           _isLogin = !_isLogin;
                         });
                       },
-                    )
+                      child: Text(_isLogin
+                          ? 'Create new account'
+                          : 'I already have an account.'),
+                    ),
                 ],
               ),
             ),
