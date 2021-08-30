@@ -16,7 +16,7 @@ class UserImagePicker extends StatefulWidget {
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
-  File _pickedImage;
+  late File _pickedImage;
 
   void _pickImage() async {
     final picker = ImagePicker();
@@ -29,7 +29,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
 
     setState(() {
       // set picked image variable this will update the preview
-      _pickedImage = File(pickedImage.path);
+      _pickedImage = File(pickedImage!.path);
     });
 
     // call the image picked function
@@ -42,11 +42,9 @@ class _UserImagePickerState extends State<UserImagePicker> {
       children: <Widget>[
         CircleAvatar(
           radius: 40,
-          backgroundImage:
-              _pickedImage != null ? FileImage(_pickedImage) : null,
+          backgroundImage: FileImage(_pickedImage),
         ),
-        FlatButton.icon(
-          textColor: Theme.of(context).primaryColor,
+        TextButton.icon(
           onPressed: _pickImage,
           icon: Icon(Icons.image),
           label: Text('Add Image'),

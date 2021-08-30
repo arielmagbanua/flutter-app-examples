@@ -2,7 +2,7 @@
 
 A very basic chat application which enables user to create an account and send a message to a public space.
 
-![Chat App](../images/avatar_chat_resized.gif)
+![Chat App](/assets/avatar_chat_resized.gif)
 
 ## Requirements
 
