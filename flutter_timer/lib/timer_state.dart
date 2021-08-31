@@ -33,4 +33,3 @@ class TimerRunInProgress extends TimerState {
 class TimerRunComplete extends TimerState {
   const TimerRunComplete() : super(0);
 }
-
