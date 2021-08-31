@@ -52,7 +52,7 @@ class GreatPlaces with ChangeNotifier {
         'image': newPlace.image.path,
         'loc_lat': newPlace.location.latitude,
         'loc_lng': newPlace.location.longitude,
-        'address': newPlace.location.address
+        'address': newPlace.location.address as String
       },
     );
   }

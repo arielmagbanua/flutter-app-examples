@@ -10,7 +10,7 @@ class PlaceDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final id = ModalRoute.of(context).settings.arguments;
+    String id = ModalRoute.of(context)!.settings.arguments as String;
     final selectedPlace =
         Provider.of<GreatPlaces>(context, listen: false).findById(id);
 
@@ -33,7 +33,7 @@ class PlaceDetailScreen extends StatelessWidget {
             height: 10,
           ),
           Text(
-            selectedPlace.location.address,
+            selectedPlace.location.address as String,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -43,9 +43,7 @@ class PlaceDetailScreen extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          FlatButton(
-            child: Text('View on Map'),
-            textColor: Theme.of(context).primaryColor,
+          TextButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -57,7 +55,8 @@ class PlaceDetailScreen extends StatelessWidget {
                 ),
               );
             },
-          )
+            child: const Text('View on Map'),
+          ),
         ],
       ),
     );

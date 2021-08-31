@@ -2,7 +2,7 @@
 
 Store a location and an image in a sqlite database. Used camera for taking a picture and google maps for displaying and picking a location.
 
-![Great Places](../images/great_places_resized.gif)
+![Great Places](/assets/great_places_resized.gif)
 
 ## Requirements
 
