@@ -15,12 +15,12 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
-  String _previewImageUrl;
+  late String? _previewImageUrl;
 
-  void _showPreview(double lat, double lng) {
+  void _showPreview(double? lat, double? lng) {
     final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
-      latitude: lat,
-      longitude: lng,
+      latitude: lat!,
+      longitude: lng!,
     );
 
     setState(() {
@@ -40,7 +40,7 @@ class _LocationInputState extends State<LocationInput> {
   }
 
   Future<void> _selectOnMap() async {
-    final LatLng selectedLocation = await Navigator.of(context).push(
+    final LatLng? selectedLocation = await Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (ctx) => MapScreen(
@@ -78,7 +78,7 @@ class _LocationInputState extends State<LocationInput> {
                   textAlign: TextAlign.center,
                 )
               : Image.network(
-                  _previewImageUrl,
+                  _previewImageUrl!,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
@@ -86,17 +86,15 @@ class _LocationInputState extends State<LocationInput> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.location_on),
-              label: Text('Current Location'),
-              textColor: Theme.of(context).primaryColor,
+            TextButton.icon(
               onPressed: _getCurrentUserLocation,
+              icon: Icon(Icons.location_on),
+              label: const Text('Current Location'),
             ),
-            FlatButton.icon(
-              icon: Icon(Icons.map),
-              label: Text('Select on Map'),
-              textColor: Theme.of(context).primaryColor,
+            TextButton.icon(
               onPressed: _selectOnMap,
+              icon: Icon(Icons.map),
+              label: const Text('Select on Map'),
             ),
           ],
         )

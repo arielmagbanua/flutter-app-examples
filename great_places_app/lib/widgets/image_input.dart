@@ -15,7 +15,7 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
-  File _storedImage;
+  late File? _storedImage;
 
   Future<void> _takePicture() async {
     final picker = ImagePicker();
@@ -32,8 +32,8 @@ class _ImageInputState extends State<ImageInput> {
       _storedImage = File(imageFile.path);
     });
     final appDir = await syspaths.getApplicationDocumentsDirectory();
-    final fileName =  path.basename(_storedImage.path);
-    final saveImage = await _storedImage.copy('${appDir.path}/$fileName');
+    final fileName = path.basename(_storedImage!.path);
+    final saveImage = await _storedImage!.copy('${appDir.path}/$fileName');
     widget.onSelectImage(saveImage);
   }
 
@@ -52,7 +52,7 @@ class _ImageInputState extends State<ImageInput> {
           ),
           child: _storedImage != null
               ? Image.file(
-                  _storedImage,
+                  _storedImage!,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 )
@@ -66,11 +66,10 @@ class _ImageInputState extends State<ImageInput> {
           width: 10,
         ),
         Expanded(
-          child: FlatButton.icon(
-            icon: Icon(Icons.camera),
-            label: Text('Take Picture'),
-            textColor: Theme.of(context).primaryColor,
+          child: TextButton.icon(
             onPressed: _takePicture,
+            icon: Icon(Icons.camera),
+            label: const Text('Take Picture'),
           ),
         ),
       ],
