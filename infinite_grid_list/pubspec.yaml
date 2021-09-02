@@ -24,17 +24,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_bloc: ^7.0.0
-  http: ^0.13.2
-  equatable: ^2.0.0
-  rxdart: ^0.26.0
-  get_it: ^7.1.2
-  font_awesome_flutter: ^9.0.0
-  flutter_native_splash: ^1.1.8+4
+  flutter_bloc: ^7.2.0
+  http: ^0.13.3
+  equatable: ^2.0.3
+  rxdart: ^0.27.1
+  get_it: ^7.2.0
+  font_awesome_flutter: ^9.1.0
+  flutter_native_splash: ^1.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.3
 
 dev_dependencies:
   flutter_test:
