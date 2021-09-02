@@ -8,7 +8,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productId = ModalRoute.of(context).settings.arguments as String;
+    final productId = ModalRoute.of(context)!.settings.arguments as String;
     final loadedProduct = Provider.of<Products>(
       context,
       listen: false,
@@ -23,7 +23,7 @@ class ProductDetailScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(loadedProduct.title),
               background: Hero(
-                tag: loadedProduct.id,
+                tag: loadedProduct.id as String,
                 child: Image.network(
                   loadedProduct.imageUrl,
                   fit: BoxFit.cover,
