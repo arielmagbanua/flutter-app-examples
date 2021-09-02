@@ -7,15 +7,14 @@ import '../models/transaction.dart';
 
 /// Card widget for transaction item.
 class TransactionItem extends StatefulWidget {
-
   /// [key] Optional widget key
   /// [transaction] The transaction object instance.
   /// [deleteTx] The delete function which enables outside widget for deleting
   /// the transaction.
   const TransactionItem({
-    Key key,
-    @required this.transaction,
-    @required this.deleteTx,
+    required Key key,
+    required this.transaction,
+    required this.deleteTx,
   }) : super(key: key);
 
   final Transaction transaction;
@@ -26,7 +25,7 @@ class TransactionItem extends StatefulWidget {
 }
 
 class _TransactionItemState extends State<TransactionItem> {
-  Color _bgColor;
+  late Color _bgColor;
 
   @override
   void initState() {
@@ -65,17 +64,16 @@ class _TransactionItemState extends State<TransactionItem> {
         ),
         title: Text(
           widget.transaction.title,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
         subtitle: Text(
           DateFormat.yMMMd().format(widget.transaction.date),
         ),
         trailing: MediaQuery.of(context).size.width > 460
-            ? FlatButton.icon(
+            ? TextButton.icon(
                 onPressed: () => widget.deleteTx(widget.transaction.id),
                 icon: Icon(Icons.delete),
-                label: Text('Delete'),
-                textColor: Theme.of(context).errorColor,
+                label: const Text('Delete'),
               )
             : IconButton(
                 icon: Icon(Icons.delete),

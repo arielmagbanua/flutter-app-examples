@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
   }
 
   List<Transaction> get _recentTransactions {
@@ -171,21 +171,23 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     ];
   }
 
-  PreferredSizeWidget _buildAppBar() {
-    return Platform.isIOS
-        ? CupertinoNavigationBar(
-      middle: Text('Personal Expenses'),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          GestureDetector(
-            child: Icon(CupertinoIcons.add),
-            onTap: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
-    )
-        : AppBar(
+  _buildAppBar() {
+    if (Platform.isIOS) {
+      return CupertinoNavigationBar(
+        middle: Text('Personal Expenses'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            GestureDetector(
+              child: Icon(CupertinoIcons.add),
+              onTap: () => _startAddNewTransaction(context),
+            )
+          ],
+        ),
+      );
+    }
+
+    return AppBar(
       title: Text('Personal Expenses'),
       actions: <Widget>[
         IconButton(
@@ -248,9 +250,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             floatingActionButton: Platform.isIOS
                 ? Container()
                 : FloatingActionButton(
-                    child: Icon(
-                      Icons.add,
-                    ),
+                    child: Icon(Icons.add),
                     onPressed: () => _startAddNewTransaction(context),
                   ),
           );
