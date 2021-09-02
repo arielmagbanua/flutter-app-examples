@@ -11,7 +11,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
-    final authdata = Provider.of<Auth>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -24,7 +24,7 @@ class ProductItem extends StatelessWidget {
             );
           },
           child: Hero(
-            tag: product.id,
+            tag: product.id as String,
             child: FadeInImage(
               placeholder: AssetImage('assets/images/product-placeholder.png'),
               image: NetworkImage(product.imageUrl),
@@ -41,8 +41,8 @@ class ProductItem extends StatelessWidget {
               color: Theme.of(context).accentColor,
               onPressed: () {
                 product.toggleFavoritesStatus(
-                  authdata.token,
-                  authdata.userId,
+                  authData.token as String,
+                  authData.userId as String,
                 );
               },
             ),
@@ -55,7 +55,7 @@ class ProductItem extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
-              cart.addItem(product.id, product.price, product.title);
+              cart.addItem(product.id!, product.price, product.title);
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
@@ -65,7 +65,7 @@ class ProductItem extends StatelessWidget {
                 action: SnackBarAction(
                     label: 'UNDO',
                     onPressed: () {
-                      cart.removeSingleItem(product.id);
+                      cart.removeSingleItem(product.id!);
                     }),
               ));
             },

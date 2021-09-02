@@ -44,8 +44,8 @@ class Products with ChangeNotifier {
 
 //  var _showFavoritesOnly = false;
 
-  final String authToken;
-  final String userId;
+  final String? authToken;
+  final String? userId;
 
   Products(this.authToken, this.userId, this._items);
 
@@ -64,21 +64,21 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     final filterString =
         filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
-    var url =
-        'https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken' +
-            filterString;
 
     try {
-      final response = await http.get(url);
+      Uri productsUri = Uri.parse(
+        'https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken' +
+            filterString,
+      );
+
+      final response = await http.get(productsUri);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
 
-      if (extractedData == null) {
-        return;
-      }
+      Uri favoritesUri = Uri.parse(
+        "https://udemy-training-af9d1.firebaseio.com/userFavorites/$userId.json?auth=$authToken",
+      );
 
-      url =
-          "https://udemy-training-af9d1.firebaseio.com/userFavorites/$userId.json?auth=$authToken";
-      final favoriteResponse = await http.get(url);
+      final favoriteResponse = await http.get(favoritesUri);
       final favoriteData = json.decode(favoriteResponse.body);
 
       final List<Product> loadedProducts = [];
@@ -103,11 +103,13 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url =
-        "https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken";
+    Uri productsUri = Uri.parse(
+      "https://udemy-training-af9d1.firebaseio.com/products.json?auth=$authToken",
+    );
+
     try {
       final response = await http.post(
-        url,
+        productsUri,
         body: json.encode({
           'title': product.title,
           'description': product.description,
@@ -125,10 +127,10 @@ class Products with ChangeNotifier {
         id: json.decode(response.body)['name'],
       );
 
-      _items.add(newProduct);
+      final result = _items.add(newProduct);
       notifyListeners();
 
-      return newProduct;
+      return result;
     } catch (error) {
       print(error);
       throw error;
@@ -138,16 +140,19 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url =
-          "https://udemy-training-af9d1.firebaseio.com/products/$id.json?auth=$authToken";
+      Uri productsUri = Uri.parse(
+        "https://udemy-training-af9d1.firebaseio.com/products/$id.json?auth=$authToken",
+      );
 
-      await http.patch(url,
-          body: json.encode({
-            'title': newProduct.title,
-            'description': newProduct.description,
-            'imageUrl': newProduct.imageUrl,
-            'price': newProduct.price,
-          }));
+      await http.patch(
+        productsUri,
+        body: json.encode({
+          'title': newProduct.title,
+          'description': newProduct.description,
+          'imageUrl': newProduct.imageUrl,
+          'price': newProduct.price,
+        }),
+      );
 
       _items[prodIndex] = newProduct;
       notifyListeners();
@@ -155,15 +160,17 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url =
-        "https://udemy-training-af9d1.firebaseio.com/products/$id.json?auth=$authToken";
+    Uri productsUri = Uri.parse(
+      "https://udemy-training-af9d1.firebaseio.com/products/$id.json?auth=$authToken",
+    );
+
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
-    var existingProduct = _items[existingProductIndex];
+    Product? existingProduct = _items[existingProductIndex];
 
     _items.removeAt(existingProductIndex);
     notifyListeners();
 
-    final response = await http.delete(url);
+    final response = await http.delete(productsUri);
 
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
