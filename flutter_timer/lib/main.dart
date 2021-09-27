@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Timer',
       theme: ThemeData(
         primaryColor: Color.fromRGBO(109, 234, 255, 1),
-        accentColor: Color.fromRGBO(72, 74, 126, 1),
         brightness: Brightness.dark,
       ),
       home: BlocProvider(

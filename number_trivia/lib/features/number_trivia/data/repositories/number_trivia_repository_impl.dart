@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:number_trivia/features/number_trivia/data/models/number_trivia_model.dart';
 
+import '../models/number_trivia_model.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
@@ -24,8 +24,8 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
 
   @override
   Future<Either<Failure, NumberTrivia>> getConcreteNumberTrivia(
-      int number,
-      ) async {
+    int number,
+  ) async {
     return await _getTrivia(() {
       return remoteDataSource.getConcreteNumberTrivia(number);
     });
@@ -39,8 +39,8 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   }
 
   Future<Either<Failure, NumberTrivia>> _getTrivia(
-      _ConcreteOrRandomChooser getConcreteOrRandom,
-      ) async {
+    _ConcreteOrRandomChooser getConcreteOrRandom,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteTrivia = await getConcreteOrRandom() as NumberTriviaModel;
