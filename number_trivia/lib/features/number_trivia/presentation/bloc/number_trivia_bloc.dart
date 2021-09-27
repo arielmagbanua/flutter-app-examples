@@ -19,6 +19,72 @@ const String CACHE_FAILURE_MESSAGE = 'Cache failure';
 const String INVALID_INPUT_FAILURE_MESSAGE =
     'Invalid Input - The number must be a positive integer or zero';
 
+String _mapFailureToMessage(Failure failure) {
+  switch (failure.runtimeType) {
+    case ServerFailure:
+      return SERVER_FAILURE_MESSAGE;
+    case CacheFailure:
+      return CACHE_FAILURE_MESSAGE;
+    default:
+      return 'Unexpected error.';
+  }
+}
+
+class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
+  final GetConcreteNumberTrivia getConcreteNumberTrivia;
+  final GetRandomNumberTrivia getRandomNumberTrivia;
+  final InputConverter inputConverter;
+
+  NumberTriviaBloc({
+    required GetConcreteNumberTrivia concrete,
+    required GetRandomNumberTrivia random,
+    required this.inputConverter,
+  })  : this.getConcreteNumberTrivia = concrete,
+        this.getRandomNumberTrivia = random,
+        super(Empty()) {
+    on<GetTriviaForConcreteNumber>(
+      (GetTriviaForConcreteNumber event, emit) {
+        final inputEither = inputConverter.stringToUnsignedInteger(
+          event.numberString,
+        );
+
+        inputEither.fold(
+          (failure) async* {
+            emit(Error(message: INVALID_INPUT_FAILURE_MESSAGE));
+          },
+          (integer) async* {
+            emit(Loading());
+            final failureOrTrivia = await getConcreteNumberTrivia(
+              Params(number: integer),
+            );
+
+            emit(
+              failureOrTrivia.fold(
+                (failure) => Error(message: _mapFailureToMessage(failure)),
+                (trivia) => Loaded(trivia: trivia),
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    on<GetTriviaForRandomNumber>(
+      (GetTriviaForRandomNumber event, emit) async {
+        emit(Loading());
+        final failureOrTrivia = await getRandomNumberTrivia(NoParams());
+        emit(
+          failureOrTrivia.fold(
+            (failure) => Error(message: _mapFailureToMessage(failure)),
+            (trivia) => Loaded(trivia: trivia),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/*
 class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   final GetConcreteNumberTrivia getConcreteNumberTrivia;
   final GetRandomNumberTrivia getRandomNumberTrivia;
@@ -76,3 +142,4 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     }
   }
 }
+*/
