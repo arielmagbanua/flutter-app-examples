@@ -11,6 +11,7 @@ import '../../domain/usecases/get_concrete_number_trivia.dart';
 import '../../domain/usecases/get_random_number_trivia.dart';
 
 part './number_trivia_event.dart';
+
 part './number_trivia_state.dart';
 
 const String SERVER_FAILURE_MESSAGE = 'Server failure';
@@ -35,16 +36,16 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   Stream<NumberTriviaState> mapEventToState(NumberTriviaEvent event) async* {
     if (event is GetTriviaForConcreteNumber) {
       final inputEither =
-      inputConverter.stringToUnsignedInteger(event.numberString);
+          inputConverter.stringToUnsignedInteger(event.numberString);
 
       yield* inputEither.fold(
-            (failure) async* {
+        (failure) async* {
           yield Error(message: INVALID_INPUT_FAILURE_MESSAGE);
         },
-            (integer) async* {
+        (integer) async* {
           yield Loading();
           final failureOrTrivia =
-          await getConcreteNumberTrivia(Params(number: integer));
+              await getConcreteNumberTrivia(Params(number: integer));
           yield* _eitherLoadedOrErrorState(failureOrTrivia);
         },
       );
@@ -56,11 +57,11 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   }
 
   Stream<NumberTriviaState> _eitherLoadedOrErrorState(
-      Either<Failure, NumberTrivia> failureOrTrivia,
-      ) async* {
+    Either<Failure, NumberTrivia> failureOrTrivia,
+  ) async* {
     yield failureOrTrivia.fold(
-          (failure) => Error(message: _mapFailureToMessage(failure)),
-          (trivia) => Loaded(trivia: trivia),
+      (failure) => Error(message: _mapFailureToMessage(failure)),
+      (trivia) => Loaded(trivia: trivia),
     );
   }
 

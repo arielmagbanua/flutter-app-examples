@@ -19,7 +19,7 @@ Future<void> init() async {
   // Features - Number Trivia
   // Bloc
   sl.registerFactory(
-        () => NumberTriviaBloc(
+    () => NumberTriviaBloc(
       concrete: sl(),
       inputConverter: sl(),
       random: sl(),
@@ -32,7 +32,7 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<NumberTriviaRepository>(
-        () => NumberTriviaRepositoryImpl(
+    () => NumberTriviaRepositoryImpl(
       localDataSource: sl(),
       networkInfo: sl(),
       remoteDataSource: sl(),
@@ -41,11 +41,11 @@ Future<void> init() async {
 
   // Data sources
   sl.registerLazySingleton<NumberTriviaRemoteDataSource>(
-        () => NumberTriviaRemoteDataSourceImpl(client: sl()),
+    () => NumberTriviaRemoteDataSourceImpl(client: sl()),
   );
 
   sl.registerLazySingleton<NumberTriviaLocalDataSource>(
-        () => NumberTriviaLocalDataSourceImpl(sharedPreferences: sl()),
+    () => NumberTriviaLocalDataSourceImpl(sharedPreferences: sl()),
   );
 
   // Core
