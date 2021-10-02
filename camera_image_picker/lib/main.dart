@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,12 +32,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late File _image;
+  final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
 
-  Future getImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+  _captureImage() async {
+    XFile? capturedImage = await _picker.pickImage(source: ImageSource.camera);
+
     setState(() {
-      _image = image as File;
+      _imageFile = capturedImage != null ? File(capturedImage.path) : null;
+    });
+  }
+
+  _pickFromGallery() async {
+    final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = pickedImage != null ? File(pickedImage.path) : null;
     });
   }
 
@@ -47,14 +57,54 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Image.file(_image as File);
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 16,
+          ),
+          _imageFile == null
+              ? Image.network(
+                  "https://via.placeholder.com/300",
+                  width: 300,
+                  height: 300,
+                  fit: BoxFit.cover,
+                )
+              : Image.file(
+                  _imageFile!,
+                  width: 300,
+                  height: 300,
+                  fit: BoxFit.cover,
+                ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.camera),
+                    label: const Text('Take a Picture'),
+                    onPressed: _captureImage,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.perm_media_outlined),
+                    label: const Text('Pick from Gallery'),
+                    onPressed: _pickFromGallery,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-      floatingActionButton: const FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Increment',
-        child: Icon(Icons.camera),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
