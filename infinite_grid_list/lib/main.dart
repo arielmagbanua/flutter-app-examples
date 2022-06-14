@@ -9,10 +9,17 @@ import 'service_container.dart' as sc;
 
 void main() async {
   EquatableConfig.stringify = kDebugMode;
-  Bloc.observer = SimpleBlocObserver();
+
+  BlocOverrides.runZoned(
+        () {
+      runApp(MyApp());
+    },
+    blocObserver: SimpleBlocObserver(),
+  );
+
   await sc.init();
 
-  runApp(MyApp());
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
