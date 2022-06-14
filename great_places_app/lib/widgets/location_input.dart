@@ -62,6 +62,13 @@ class _LocationInputState extends State<LocationInput> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _previewImageUrl = null;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
