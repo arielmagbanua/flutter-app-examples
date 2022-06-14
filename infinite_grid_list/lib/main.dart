@@ -18,8 +18,6 @@ void main() async {
   );
 
   await sc.init();
-
-  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
