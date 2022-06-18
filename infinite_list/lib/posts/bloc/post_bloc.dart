@@ -26,79 +26,61 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   final http.Client httpClient;
 
-  PostBloc({required this.httpClient}) : super(PostState());
+  PostBloc({required this.httpClient}) : super(PostState()) {
+    on<PostFetched>(
+      (PostFetched event, emit) async {
+        // already reached the max so immediately do nothing and return the state.
+        if (state.hasReachedMax) {
+          return emit(state);
+        }
 
-  @override
-  Stream<Transition<PostEvent, PostState>> transformEvents(
-      Stream<PostEvent> events,
-      TransitionFunction<PostEvent, PostState> transitionFn,
-      ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
-      transitionFn,
+        try {
+          if (state.status == PostStatus.initial) {
+            // Initial state fetch the first 20 posts and return a success state
+            final posts = await _fetchPosts();
+            emit(state.copyWith(
+              status: PostStatus.success,
+              posts: posts,
+              hasReachedMax: false,
+            ));
+          }
+
+          // Not initial state this means that we are fetching the next 20 posts.
+          // This fetches from the end of the previous fetched posts and then
+          // fetch new 20 posts.
+          final posts = await _fetchPosts(state.posts.length);
+
+          if (posts.isEmpty) {
+            // No more posts available therefore we reached the limit
+            // now return a state that signifies that we reached the limit of posts.
+            return emit(state.copyWith(hasReachedMax: true));
+          }
+
+          // everything's fine now return a success state appending the fetched
+          // posts to the existing list.
+          return emit(state.copyWith(
+            status: PostStatus.success,
+            posts: List.of(state.posts)..addAll(posts),
+            hasReachedMax: false,
+          ));
+        } on Exception {
+          return emit(state.copyWith(status: PostStatus.failure));
+        }
+      },
+      transformer: debounce(const Duration(milliseconds: 300)),
+    );
+
+    on<ListRefresh>(
+      (ListRefresh event, emit) {
+        emit(state.copyWith(
+            status: PostStatus.initial, posts: <Post>[], hasReachedMax: false));
+      },
+      transformer: debounce(const Duration(milliseconds: 300)),
     );
   }
 
-  @override
-  Stream<PostState> mapEventToState(
-    PostEvent event,
-  ) async* {
-    if (event is ListRefresh) {
-      // refreshing the list so return an initial state again
-      final emptyState = state.copyWith(
-        status: PostStatus.initial,
-        posts: <Post>[],
-        hasReachedMax: false
-      );
-
-      yield emptyState;
-      yield await _mapPostFetchedToState(state);
-    } else {
-      yield await _mapPostFetchedToState(state);
-    }
-  }
-
-  ///_mapPostFetchedToState
-  ///
-  /// This method maps the post fetched event to the correct state.
-  Future<PostState> _mapPostFetchedToState(PostState state) async {
-    // already reached the max so immediately do nothing and return the state.
-    if (state.hasReachedMax) {
-      return state;
-    }
-
-    try {
-      if (state.status == PostStatus.initial) {
-        // Initial state fetch the first 20 posts and return a success state
-        final posts = await _fetchPosts();
-        return state.copyWith(
-          status: PostStatus.success,
-          posts: posts,
-          hasReachedMax: false,
-        );
-      }
-
-      // Not initial state this means that we are fetching the next 20 posts.
-      // This fetches from the end of the previous fetched posts and then
-      // fetch new 20 posts.
-      final posts = await _fetchPosts(state.posts.length);
-
-      if (posts.isEmpty) {
-        // No more posts available therefore we reached the limit
-        // now return a state that signifies that we reached the limit of posts.
-        return state.copyWith(hasReachedMax: true);
-      }
-
-      // everything's fine now return a success state appending the fetched
-      // posts to the existing list.
-      return state.copyWith(
-        status: PostStatus.success,
-        posts: List.of(state.posts)..addAll(posts),
-        hasReachedMax: false,
-      );
-    } on Exception {
-      return state.copyWith(status: PostStatus.failure);
-    }
+  EventTransformer<PostEvent> debounce<PostEvent>(Duration duration) {
+    return (events, mapper) => events.debounceTime(duration).flatMap(mapper);
   }
 
   /// _fetchPosts

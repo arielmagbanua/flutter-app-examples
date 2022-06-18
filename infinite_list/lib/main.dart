@@ -8,8 +8,13 @@ import 'simple_bloc_observer.dart';
 
 void main() {
   EquatableConfig.stringify = kDebugMode;
-  Bloc.observer = SimpleBlocObserver();
-  runApp(MyApp());
+
+  BlocOverrides.runZoned(
+        () {
+      runApp(MyApp());
+    },
+    blocObserver: SimpleBlocObserver(),
+  );
 }
 
 class MyApp extends StatelessWidget {
