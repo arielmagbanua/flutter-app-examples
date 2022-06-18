@@ -23,13 +23,13 @@ class MessageBubble extends StatelessWidget {
       children: <Widget>[
         Row(
           mainAxisAlignment:
-          isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: isMe ? Colors.grey[300] : Theme
-                    .of(context)
-                    .accentColor,
+                color: isMe
+                    ? Colors.grey[300]
+                    : Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
@@ -48,7 +48,7 @@ class MessageBubble extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment:
-                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     username,
@@ -56,11 +56,7 @@ class MessageBubble extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: isMe
                           ? Colors.black
-                          : Theme
-                          .of(context)
-                          .accentTextTheme
-                          .headline6!
-                          .color,
+                          : Theme.of(context).textTheme.headline6!.color,
                     ),
                   ),
                   Text(
@@ -68,11 +64,7 @@ class MessageBubble extends StatelessWidget {
                     style: TextStyle(
                       color: isMe
                           ? Colors.black
-                          : Theme
-                          .of(context)
-                          .accentTextTheme
-                          .headline6!
-                          .color,
+                          : Theme.of(context).textTheme.headline6!.color,
                     ),
                     textAlign: isMe ? TextAlign.end : TextAlign.start,
                   ),
