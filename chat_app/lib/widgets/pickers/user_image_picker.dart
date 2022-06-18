@@ -15,24 +15,32 @@ class UserImagePicker extends StatefulWidget {
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
-  late File _pickedImage;
+  late File? _pickedImage;
 
   void _pickImage() async {
     final picker = ImagePicker();
-    // pick image from camera
-    final pickedImage = await picker.getImage(
+
+    final selectedImage = await picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 50,
-      maxWidth: 150,
+      maxHeight: 150,
     );
 
-    setState(() {
-      // set picked image variable this will update the preview
-      _pickedImage = File(pickedImage!.path);
-    });
+    if (selectedImage != null) {
+      setState(() {
+        // set picked image variable this will update the preview
+        _pickedImage = File(selectedImage.path);
+      });
+    }
 
     // call the image picked function
-    widget.imagePickFn(_pickedImage);
+    widget.imagePickFn(_pickedImage!);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pickedImage = null;
   }
 
   @override
@@ -41,7 +49,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
       children: <Widget>[
         CircleAvatar(
           radius: 40,
-          backgroundImage: FileImage(_pickedImage),
+          backgroundImage: FileImage(_pickedImage!),
         ),
         TextButton.icon(
           onPressed: _pickImage,
