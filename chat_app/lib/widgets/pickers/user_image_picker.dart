@@ -45,11 +45,19 @@ class _UserImagePickerState extends State<UserImagePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final avatar;
+
+    if (_pickedImage != null) {
+      avatar = FileImage(_pickedImage!);
+    } else {
+      avatar = AssetImage('assets/initial_avatar.jpg');
+    }
+
     return Column(
       children: <Widget>[
         CircleAvatar(
           radius: 40,
-          backgroundImage: FileImage(_pickedImage!),
+          backgroundImage: avatar,
         ),
         TextButton.icon(
           onPressed: _pickImage,
