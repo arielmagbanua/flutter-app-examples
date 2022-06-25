@@ -44,10 +44,10 @@ class _AuthFormState extends State<AuthForm> {
     // closes the keyboard
     FocusScope.of(context).unfocus();
 
-    if (!_isLogin) {
+    if (!_isLogin && !isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please pick an image.'),
+          content: Text('Invalid user data.'),
           backgroundColor: Theme.of(context).errorColor,
         ),
       );
