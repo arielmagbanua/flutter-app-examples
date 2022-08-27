@@ -7,7 +7,7 @@ class AuthUser {
   final bool isEmailedVerified;
 
   const AuthUser({
-    this.email,
+    required this.email,
     required this.isEmailedVerified,
   });
 
