@@ -29,13 +29,6 @@ class _NotesViewState extends State<NotesView> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
-    _notesService.close();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
