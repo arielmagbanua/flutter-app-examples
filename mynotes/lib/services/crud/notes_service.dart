@@ -14,7 +14,6 @@ class NotesService {
 
   // singleton implementation
   static final NotesService _shared = NotesService._sharedInstance();
-
   NotesService._sharedInstance() {
     _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
       onListen: () {
