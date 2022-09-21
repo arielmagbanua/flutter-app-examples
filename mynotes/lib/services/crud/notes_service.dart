@@ -270,6 +270,8 @@ class NotesService {
       await _cacheNotes();
     } on MissingPlatformDirectoryException {
       throw UnableToGetDocumentsDirectory();
+    } catch (e) {
+      print(e);
     }
   }
 }
@@ -329,7 +331,7 @@ class DatabaseNote {
   int get hashCode => id.hashCode;
 }
 
-const dbName = 'notes.db';
+const dbName = 'my_notes.db';
 const notesTable = 'notes';
 const userTable = 'users';
 const idColumn = 'id';
@@ -341,17 +343,17 @@ const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 const createUsersTable = '''
 create table if not exists users
 (
-  id    INTEGER not null primary key autoincrement,
-  email TEXT not null unique
+  $idColumn INTEGER not null primary key autoincrement,
+  $emailColumn TEXT not null unique
 );
 ''';
 
 const createNotesTable = '''
 create table if not exists notes
 (
-  id                 INTEGER not null primary key on conflict fail,
-  user_id            INTEGER not null constraint notes_users_id_fk references users on update cascade on delete cascade,
-  text               TEXT,
-  is_sync_with_cloud INTEGER default 0 not null
+  $idColumn          INTEGER not null primary key on conflict fail,
+  $userIdColumn      INTEGER not null constraint notes_users_id_fk references users on update cascade on delete cascade,
+  $textColumn        TEXT,
+  $isSyncedWithCloudColumn INTEGER default 0 not null
 );
 ''';
