@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mynotes/views/notes/notes_list_view.dart';
 import 'dart:developer' as devtools show log;
 
+import 'notes_list_view.dart';
 import '../../constants/routes.dart';
 import '../../enums/menu_action.dart';
 import '../../services/auth/auth_service.dart';
