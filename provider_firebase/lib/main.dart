@@ -85,14 +85,15 @@ GoRouter router() {
         builder: (context, state) => const Tasks(),
       ),
     ],
+    redirect: (BuildContext context, GoRouterState state) {
+      var user = Provider.of<User?>(context);
+
+      if (user != null) {
+        return '/tasks';
+      }
+
+      return null;
+    }
   );
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
