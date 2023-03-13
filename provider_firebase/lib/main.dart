@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_firebase/services/database_service.dart';
+import 'package:provider_firebase/services/user_service.dart';
 
 import 'firebase_options.dart';
 import 'pages/login_page.dart';
@@ -48,7 +50,9 @@ class MyApp extends StatelessWidget {
               StreamProvider<User?>.value(
                 value: FirebaseAuth.instance.authStateChanges(),
                 initialData: null,
-              )
+              ),
+              Provider(create: (context) => UserService()),
+              Provider(create: (context) => DatabaseService()),
             ],
             child: MaterialApp.router(
               title: 'Flutter Demo',

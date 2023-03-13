@@ -28,3 +28,4 @@ class Task {
     return Task.fromMap(data);
   }
 }
+
