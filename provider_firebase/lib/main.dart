@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
-import 'screens/login.dart';
-import 'screens/tasks.dart';
-import 'screens/error.dart';
-import 'screens/loading.dart';
+import 'pages/login_page.dart';
+import 'pages/tasks_page.dart';
+import 'pages/error_page.dart';
+import 'pages/loading_page.dart';
 
 void main() {
   // ensure widgets binding are initialized
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.red,
             ),
-            home: Error(snapshot.error.toString()),
+            home: ErrorPage(snapshot.error.toString()),
           );
         }
 
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const Loading(),
+          home: const LoadingPage(),
         );
       },
     );
@@ -78,11 +78,11 @@ GoRouter router() {
     routes: [
       GoRoute(
         path: '/login',
-        builder: (context, state) => const Login(),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         path: '/tasks',
-        builder: (context, state) => const Tasks(),
+        builder: (context, state) => const TasksPage(),
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
