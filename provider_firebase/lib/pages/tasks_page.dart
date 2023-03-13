@@ -8,11 +8,24 @@ class TasksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<User>(context);
+    var user = Provider.of<User?>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Tasks'),),
-      body: const Center(child: Text('Tasks'),),
+      appBar: AppBar(
+        title: const Text('Tasks'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              // sign out the user
+              await FirebaseAuth.instance.signOut();
+            },
+            icon: const Icon(Icons.logout_outlined),
+          ),
+        ],
+      ),
+      body: const Center(
+        child: Text('Tasks'),
+      ),
     );
   }
 }

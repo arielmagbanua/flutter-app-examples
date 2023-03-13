@@ -92,8 +92,7 @@ GoRouter router() {
         return '/tasks';
       }
 
-      return null;
+      return '/login';
     }
   );
 }
-
