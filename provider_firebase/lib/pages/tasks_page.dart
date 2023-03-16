@@ -81,8 +81,8 @@ class TasksPage extends StatelessWidget {
         final task = tasks[index];
         final taskDoc = task.data();
 
-        // get the deadline as timestamp
-        final deadline = task['deadline'] as Timestamp;
+        // get the description as timestamp
+        final description = task['description'];
 
         return Dismissible(
           key: Key(task.id),
@@ -125,7 +125,7 @@ class TasksPage extends StatelessWidget {
               child: CheckboxListTile(
                 key: ValueKey(task.id),
                 subtitle: Text(
-                  deadline.toDate().toString(),
+                  description,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 title: Text(
