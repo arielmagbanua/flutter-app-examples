@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_firebase/pages/add_task_page.dart';
 import 'package:provider_firebase/services/database_service.dart';
 import 'package:provider_firebase/services/user_service.dart';
 
@@ -45,13 +48,11 @@ class MyApp extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
+          final userService = UserService();
+
           return MultiProvider(
             providers: [
-              StreamProvider<User?>.value(
-                value: FirebaseAuth.instance.authStateChanges(),
-                initialData: null,
-              ),
-              Provider(create: (context) => UserService()),
+              Provider(create: (context) => userService),
               Provider(create: (context) => DatabaseService()),
             ],
             child: MaterialApp.router(
@@ -59,7 +60,11 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              routerConfig: router(),
+              routerConfig: router(
+                AuthRefreshStreamNotifier(
+                    FirebaseAuth.instance.authStateChanges()),
+                userService,
+              ),
             ),
           );
         }
@@ -76,27 +81,62 @@ class MyApp extends StatelessWidget {
   }
 }
 
-GoRouter router() {
+class AuthRefreshStreamNotifier extends ChangeNotifier {
+  late final StreamSubscription<dynamic> _subscription;
+
+  AuthRefreshStreamNotifier(Stream<dynamic> stream) {
+    _subscription = stream.asBroadcastStream().listen(
+          (_) => notifyListeners(),
+        );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscription.cancel();
+  }
+}
+
+GoRouter router(
+  AuthRefreshStreamNotifier authRefreshStream,
+  UserService userService,
+) {
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/tasks',
     routes: [
       GoRoute(
         path: '/login',
-        builder: (context, state) => const LoginPage(),
+        builder: (_, state) => const LoginPage(),
       ),
       GoRoute(
         path: '/tasks',
-        builder: (context, state) => const TasksPage(),
+        builder: (_, state) => const TasksPage(),
+        routes: [
+          GoRoute(
+            path: 'add-task',
+            builder: (_, state) => const AddTaskPage(),
+          ),
+        ],
       ),
     ],
-    redirect: (BuildContext context, GoRouterState state) {
-      var user = Provider.of<User?>(context);
-
-      if (user != null) {
-        return '/tasks';
+    refreshListenable: authRefreshStream,
+    redirect: (_, state) {
+      if (userService.currentUser == null) {
+        // redirect to login page if the user is not at the login page
+        return state.subloc == '/login' ? null : '/login';
       }
 
-      return '/login';
-    }
+      if (userService.currentUser != null) {
+        if (state.subloc == '/login') {
+          // still in login then redirect to tasks page
+          return '/tasks';
+        }
+
+        return state.subloc != '/tasks' ? state.subloc : '/tasks';
+      }
+
+      // do not redirect
+      return null;
+    },
   );
 }

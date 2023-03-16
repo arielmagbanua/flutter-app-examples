@@ -1,33 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:provider_firebase/services/database_service.dart';
-import 'package:provider_firebase/services/user_service.dart';
+
+import '../services/database_service.dart';
+import '../services/user_service.dart';
 
 class TasksPage extends StatelessWidget {
   const TasksPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final userService = Provider.of<UserService>(context);
-    final databaseService = Provider.of<DatabaseService>(context);
+    final userService = Provider.of<UserService>(context, listen: false);
+    final dbService = Provider.of<DatabaseService>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tasks'),
         actions: [
           IconButton(
+            onPressed: () {
+              context.go('/tasks/add-task');
+            },
+            icon: const Icon(Icons.add),
+          ),
+          IconButton(
             onPressed: () async {
               // sign out the user
-              await FirebaseAuth.instance.signOut();
+              await userService.logout();
             },
             icon: const Icon(Icons.logout_outlined),
           ),
         ],
       ),
       body: StreamBuilder(
-        stream: databaseService.userTasks(userService.currentUser!.uid),
+        stream: dbService.userTasks(userService.currentUser!.uid),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             // something went wrong therefore return a widget with an error message.
@@ -48,7 +55,7 @@ class TasksPage extends StatelessWidget {
             return _createTaskList(
               context,
               snapshot.data!.docs,
-              databaseService.tasksReference,
+              dbService.tasksReference,
             );
           }
 
